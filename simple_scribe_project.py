@@ -33,7 +33,7 @@ def new_file(): # name change
                     valid_entry = False
                     break # invalid character found, restart loop
             if valid_entry == True:
-                file = open(f"{file_name}","a")
+                file = open(f"{file_name}","a+")
                 print(f"'{file_name}' Open\n")
                 break
         else:
@@ -48,33 +48,54 @@ def open_file():
             print("\n")
             break
         if os.path.exists(file_name):
-            file = open(f"{file_name}","a")
+            file = open(f"{file_name}","a+")
             print(f"'{file_name}' Open\n")
+            file.seek(0)
+            print(file.read())
             break
         else:
             print("File Not Found")
 
 session_ended = False
 settings_list = [
+    "Back",
     "Other Documents",
     "Document Statistics",
     "User Operation",
 ]
 def settings():
-    for i,setting in enumerate(settings_list):
-        print(f"[{i}] {setting}")
+    global reset
+    while True:
+        for i,setting in enumerate(settings_list):
+            print(f"[{i}] {setting}")
+        setting_input = input("Select Option: ")
+        if setting_input == "0":
+            reset = True
+            break
+        elif setting_input == "1":
+            pass
+        elif setting_input == "2":
+            pass
+        elif setting_input == "3":
+            pass
+        else:
+            ("Invalid Input")
 
 starting_option()
-            
+reset = False
 while True: # main loop
+    if reset == True:
+        print(file)
+        reset = False
     user_write = input("")
     if user_write == "-0": # end session
         file.close()
+        print(f"\n{file_name} Closed")
         break
     elif user_write == "-00": # settings
         settings()
     elif user_write == "-01": # delete file
-        print(f"{file_name} Deleted")
+        print(f"\n{file_name} Deleted")
         file.close()
         os.remove(file_name)
         break
@@ -85,9 +106,10 @@ while True: # main loop
     elif user_write.lower() == "-u": # underline
         pass
     elif user_write.lower() == "-c": # clear file
-        file = open(f"{file}","w")
+        print(f"{file_name} Cleared")
+        file = open(f"{file_name}","w")
         file.write("")
         file.close()
-        file = open(f"{file}","a")
+        file = open(f"{file_name}","a")
     else:
         file.write(f"{user_write}\n")
