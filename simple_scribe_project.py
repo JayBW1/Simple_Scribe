@@ -1,9 +1,18 @@
-# a tool where users can make and edit txt documents
+# a tool where users can make and edit text documents
 import os
 
 Valid_chars = [" ","_","-",",",".","*","()","a","b","c","d","e","f","g","h"\
 ,"i","j","k","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"\
 ,"1","2","3","4","5","6","7","8","9","0"]
+
+keyboard_shortcut_dict = {"[ /b]": "Bold",
+                          "[ /i]": "Italic",
+                          "[ /u]": "Underline"
+                          }
+
+def keyboard_shortcut_dict_list():
+    for key, value in dict.items(keyboard_shortcut_dict):
+        print(f"{key}\t{value}")
 
 break2 = False
 
@@ -108,9 +117,11 @@ while True: # main loop
             file.seek(0);ribbon_tab()
             print(f"\n{file.read()}")
     elif user_write == "-0": # end session
-        file.close()
         print(f"\n{file_name} Closed")
+        file.close()
         break
+    elif user_write == "+0":
+        keyboard_shortcut_dict_list()
     elif user_write == "=0": # settings
         settings()
     elif user_write == "/0": # delete file
@@ -118,11 +129,11 @@ while True: # main loop
         file.close()
         os.remove(file_name)
         break
-    elif user_write.lower() == "-b": # bold
+    elif user_write.lower() == " /b": # bold
         pass
-    elif user_write.lower() == "-i": # italic
+    elif user_write.lower() == " /i": # italic
         pass
-    elif user_write.lower() == "-u": # underline
+    elif user_write.lower() == " /u": # underline
         pass
     elif user_write.lower() == "-c": # clear file
         print(f"{file_name} Cleared\n")
