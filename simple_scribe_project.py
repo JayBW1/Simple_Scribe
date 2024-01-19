@@ -5,9 +5,10 @@ Valid_chars = [" ","_","-",",",".","*","()","a","b","c","d","e","f","g","h"\
 ,"i","j","k","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"\
 ,"1","2","3","4","5","6","7","8","9","0"]
 
-keyboard_shortcut_dict = {"[ /b]": "Bold",
-                          "[ /i]": "Italic",
-                          "[ /u]": "Underline"
+keyboard_shortcut_dict = {" /b": "Bold",
+                          " /i": "Italic",
+                          " /u": "Underline",
+                          " /e": "End"
                           }
 
 def keyboard_shortcut_dict_list():
@@ -15,6 +16,29 @@ def keyboard_shortcut_dict_list():
         print(f"{key}\t{value}")
 
 break2 = False
+
+class edit_type:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   ITALIC = "\033[3m"
+   END = '\033[0m'
+    
+def shortcut():
+    if " /b" in user_write:
+        print(edit_type.BOLD + user_write)
+    elif " /i" in user_write:
+        print(edit_type.ITALIC + user_write)
+    elif " /u" in user_write:
+        print(edit_type.UNDERLINE + user_write)
+    elif " /e" in user_write:
+        print(edit_type.END + user_write)
 
 def starting_option():
     global break2
@@ -65,7 +89,7 @@ def open_file():
             file = open(f"{file_name}","a+")
             print(f"'{file_name}' Open")
             file.seek(0)
-            print(file.read());ribbon_tab();break
+            ribbon_tab();print(file.read());break
         else:
             print("File Not Found")
 
@@ -105,42 +129,43 @@ while True: # main loop
         break
     if reset == True:
         file.seek(0)
-        print(f"\n{file.read()}")
+        ribbon_tab();print(file.read())
         reset = False
-    
     user_write = input("") # backspace
-    if user_write == "":
-        if file == "":
-            continue
-        else:
-            file.write("\b\b")
-            file.seek(0);ribbon_tab()
-            print(f"\n{file.read()}")
-    elif user_write == "-0": # end session
+    # if user_write == "":
+    #     if file == "":
+    #         continue
+    #     else:
+    #         file.write("\b\b")
+    #         file.seek(0);ribbon_tab()
+    #         print(f"\n{file.read()}")
+    if user_write == "-0": # end session
         print(f"\n{file_name} Closed")
         file.close()
         break
     elif user_write == "+0":
         keyboard_shortcut_dict_list()
     elif user_write == "=0": # settings
-        settings()
+        print("\n");settings()
     elif user_write == "/0": # delete file
         print(f"\n{file_name} Deleted")
         file.close()
         os.remove(file_name)
         break
-    elif user_write.lower() == " /b": # bold
-        pass
-    elif user_write.lower() == " /i": # italic
-        pass
-    elif user_write.lower() == " /u": # underline
-        pass
+    # elif user_write.lower() == " /b": # bold
+    #     pass
+    # elif user_write.lower() == " /i": # italic
+    #     pass
+    # elif user_write.lower() == " /u": # underline
+    #     pass
     elif user_write.lower() == "-c": # clear file
         print(f"{file_name} Cleared\n")
         file = open(f"{file_name}","w")
-        file.write("")
-        file.close()
-        file = open(f"{file_name}","a+")
-        ribbon_tab()
+        file.write("");file.close()
+        file = open(f"{file_name}","a+");ribbon_tab()
     else:
-        file.write(f"{user_write}\n")
+        if user_write in keyboard_shortcut_dict:
+            shortcut()
+            file.write(f"{user_write}\n")
+            
+        else:file.write(f"{user_write}\n")
